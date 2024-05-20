@@ -1,8 +1,8 @@
 fx_version 'cerulean'
 game 'gta5'
 author 'Cyrix'
-description 'C-Breathalsyer'
-version '1.0'
+description 'C-Breathalyzer'
+version '1.1'
 
 client_scripts {
     'client/*.lua'

@@ -1,41 +1,55 @@
-# C-Breathalsyer
-[Discord](https://discord.gg/YvThXdz59G)
+# C-Breathalyzer
+[Discord](https://discord.gg/PV3X2h5TTG)
+
+# Preview
+Coming Soon
 
 # Feature
-- Breathalsyer system
+- Breathalyzer system
 - Lots of config options
 - Drag and drop
 - Open Source
 
 # Installation
-1. Download From [github](https://github.com/SirCyirx/C-Breathalsyer)
-2. Rename The Folder From c-breathalsyer-main to c-breathalsyer.
+1. Download From [github](https://github.com/SirCyirx/C-Breathalyzer)
+2. Rename The Folder From c-breathalyzer-main to c-breathalyzer.
 3. Put The Folder In Your Resources Folder.
-4. Add the below events to when you use a achool item and when drinking water/getting sober
+4. Add the below events to when you use a achool item and when drinking water/getting sober.
 Do this to add bac level to someone
 ```lua
-TriggerServerEvent('c-breathalsyer:server:addbaclevel', source, newamount)
+TriggerServerEvent('c-breathalyzer:server:add_bac_level', newamount)
 ```
 
 Do this to remove bac level from someone
 ```lua
-TriggerServerEvent('c-breathalsyer:server:revmovebaclevel', source, removeamount)
+TriggerServerEvent('c-breathalyzer:server:remove_bac_level', removeamount)
 ```
-5. Add this to the following path [qb]/qb-core/server/player.lua
+5. If old qb style add this add this to the following path [qb]/qb-core/server/player.lua 
 ```lua
 PlayerData.metadata['baclevel'] = PlayerData.metadata['baclevel'] or 0
 ```
-6. Restart Your Server.
+If old qb style add this add this to the following path [qb]/qb-core/config.lua
+```lua
+baclevel = 0,
+```
+6. Add the details from qb or ox.md files depending on what inventory you use
+7. Add breath.ogg and put it into path - (interact-sound/client/html/sounds)
+8. Restart Your Server.
 
 # Dependencies
 1. [qb-core](https://github.com/qbcore-framework/qb-core)
 2. [ox_lib](https://github.com/overextended/ox_lib/releases) 
+3. [qb-inventory](https://github.com/qbcore-framework/qb-inventory/releases/tag/v1) or [ox_inventory](https://github.com/overextended/ox_inventory)
+
+# Optional Dependencies
+1. [interact-sound](https://github.com/plunkettscott/interact-sound)
 
 Put this into your cfg in this in order
 ```
 ensure ox_lib
 ensure qb-core
-ensure c-breathalsyer
+ensure qb-inventory or ox_inventory
+ensure c-breathalyzer
 ```
 
 # Commands
@@ -43,7 +57,7 @@ ensure c-breathalsyer
 
 # Usage
 This example is for [qb-smallresources](https://github.com/qbcore-framework/qb-smallresources)
-- qb-smallresources/server/consumables.lua. line 190
+- qb-smallresources/client/consumables.lua. line 190
 **Add**
 ```lua
 RegisterNetEvent('consumables:client:DrinkAlcohol', function(itemName)
@@ -62,7 +76,7 @@ RegisterNetEvent('consumables:client:DrinkAlcohol', function(itemName)
         coords = vec3(0.0, 0.0, -0.05),
         rotation = vec3(0.0, 0.0, -40),
     }, {}, function() -- Done
-        TriggerServerEvent('c-breathalsyer:server:addbaclevel', source, 1)
+        TriggerServerEvent('c-breathalyzer:server:add_bac_level', math.random(1, 2))
         TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items[itemName], 'remove')
         TriggerServerEvent('consumables:server:drinkAlcohol', itemName)
         TriggerServerEvent('consumables:server:addThirst', QBCore.Functions.GetPlayerData().metadata.thirst + Config.Consumables.alcohol[itemName])

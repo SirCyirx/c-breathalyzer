@@ -2,25 +2,39 @@ local QBCore = exports['qb-core']:GetCoreObject()
 
 Config = Config or {}
 
-Config.NotifyType = "ox" -- [qb] or [Okok] or [ox] or [mythic]
-Config.Progressbar = "ox" -- [qb] or [ox]
+Config.NotifyType = "qb" -- [qb] or [Okok] or [ox] or [mythic]
+Config.Progressbar = "qb" -- [qb] or [ox]
+Config.Inventory = "qb" -- [qb] or [ox]
 
-Config.Metadata = true -- If set true when police use /bac players will get tested based on the metadata they have.
+Config.UseCommand = true -- If set true then you can use the command to trigger the event to start
+Config.CommandName = "bac" -- Set this to what you want the command to be called. Default "bac". In game it will look like /bac
+Config.UseItem = true -- If set true and If Config.Inventory = "qb" then you can use item to trigger the event to start. If set false item will do nothing. Note if using ox_inventory you must follow ox.md instructions for item to work/not work
+Config.ItemName = "breathalyzer" -- Set this to the name of your item. Default "breathalyzer".
+Config.UseMetadata = true -- If set true when police use /bac players will get tested based on the metadata they have.
 -- If set false when police use /bac players will be promoted with an input that they can put in the amount they want.
-
-Config.BACTestRank = 2 -- Set this to the police rank and above that can use the breathalsyer command /bac.
+Config.PlaySound = true -- If set to true then a sound will play when testing a player -- DOES NEED (interact-sound) to work.
+Config.BACTestRank = 2 -- Set this to the police rank and above that can use the breathalyzer command /bac.
 Config.LegalLimt = "0.05" -- Set this to what you want your legal limt to be. Recommended/default 0.05.
 Config.PoliceJob = "police" -- Set this to your police job name. Default "police".
 Config.ShowTime = 10000 -- Set to the amount of milliseconds you want the players bac level and legal level to show for. Recommended/default set at 10000 = to 10 seconds.
 Config.UseAdminCommands = true -- If set true admins can use /GiveBAC /RemoveBAC to give and remove bac level from people.
+Config.AdminCommands = {
+    GiveBAC = 'GiveBAC',
+    RemoveBAC = 'RemoveBAC'
+}
 Config.RequirePermission = true -- If set true when police use /bac the nearest player will have to allow to be tested. -- If set false it will just start testing them.
-Config.UseWearOff = true -- If set true after c-breathalsyer:server:addbaclevel has been triggered then for every Config.WearOff.Time there is each time it ticks,
+Config.UseWearOff = true -- If set true after c-breathalyzer:server:add_bac_level has been triggered then for every Config.WearOff.Time there is each time it ticks,
 -- Example every 30 minutes it removes 1 bac level = to 0.01 bac level you can change this with Config.WearOff.Amount default set at 300000 which is 30 minutes.
 Config.WearOff = {
     Time = 300000, -- Set to the amount of mill seconds you want to wait before the new bac amount wears off. Recommended/default set at 300000 = to 30 minutes.
     Amount = 1, -- Set to the amount you want it to wear off by do 1-40. Recommended/default set at 1
-    Same = false -- If set true it will remove the amount gained when c-breathalsyer:server:addbaclevel is done and Config.UseWearOff = true.  --If set false it will remove Amount = Config.WearOff.Amount
+    Same = false -- If set true it will remove the amount gained when c-breathalyzer:server:add_bac_level is done and Config.UseWearOff = true.  --If set false it will remove Amount = Config.WearOff.Amount
 }
+Config.Min = "0" -- Only used if Config.UseMetadata = false
+Config.Max = "0.40" -- Only used if Config.UseMetadata = false
+
+Config.UseWebHook = true -- If set true then a meesage will be sent to the below webhook when a player is deleted
+Config.Webhook = ""
 
 Config.Lang = {
     ["header"] = "Police BAC Tester.",
@@ -41,7 +55,8 @@ Config.Lang = {
     ["input_2"] = "Example put 0.06",
     ["command_text_1"] = "Blood Alcohol Level Test.",
     ["command_text_2"] = "Id of player you want to test",
-    ["command_text_3"] = "Blood Alcohol Level Test. This will test the closest player"
+    ["command_text_3"] = "Blood Alcohol Level Test. This will test the closest player",
+    ["too_fast"] = "Your doing this too fast. Please try again!"
 }
 
 function NotifyClientAlert(titletext, msgtext, type)
