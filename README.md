@@ -24,14 +24,17 @@ Do this to remove bac level from someone
 ```lua
 TriggerServerEvent('c-breathalyzer:server:remove_bac_level', removeamount)
 ```
-5. If old qb style add this add this to the following path [qb]/qb-core/server/player.lua 
+5. 
+If old qb style add this add this to the following path [qb]/qb-core/server/player.lua 
 ```lua
 PlayerData.metadata['baclevel'] = PlayerData.metadata['baclevel'] or 0
 ```
-If old qb style add this add this to the following path [qb]/qb-core/config.lua
+
+If new qb style add this add this to the following path [qb]/qb-core/config.lua
 ```lua
 baclevel = 0,
 ```
+
 6. Add the details from qb or ox.md files depending on what inventory you use
 7. Add breath.ogg and put it into path - (interact-sound/client/html/sounds)
 8. Restart Your Server.
