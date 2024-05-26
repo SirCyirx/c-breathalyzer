@@ -80,13 +80,16 @@ function DisplayBACLevel(text)
 end
 
 lib.callback.register('c-breathalyzer:client:requestpermission', function()
-    local Alert = lib.alertDialog({ header = Config.Lang["header"], content = Config.Lang["alertDialog_text"], centered = true, cancel = true })
-  if Alert == "confirm" then
-      return "confirm"
-  elseif "cancel"then
-      return "cancel"
-   end
-end)
+   if Config.RequirePermission == true then
+     local Alert = lib.alertDialog({ header = Config.Lang["header"], content = Config.Lang["alertDialog_text"], centered = true, cancel = true })
+   if Alert == "confirm" then
+        return "confirm"
+   elseif "cancel"then
+        return "cancel"
+    end else
+        return "confirm"
+     end
+ end)
 
 lib.callback.register('c-breathalyzer:client:openinput', function()
     local Input = lib.inputDialog(Config.Lang["header"], {{type = 'input', label = Config.Lang["input_1"], description = Config.Lang["input_2"]}})
